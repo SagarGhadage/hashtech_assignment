@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 export default function Table() {
@@ -26,12 +26,40 @@ export default function Table() {
       valid: item.valid ? "True" : "False",
     };
   });
+  const [filteredRows, setFilteredRows] = useState(rows);
+  const filterValidRecords = () => {
+    const validRows = rows.filter((row) => row.valid === "True");
+    setFilteredRows(validRows);
+  };
+
+  const filterRangeRecords = () => {
+    const rangeRows = rows.filter(
+      (row) => row.range > 29 && row.range < 61
+    );
+    setFilteredRows(rangeRows);
+  };
   return (
     <div>
       <Button variant="contained" color="primary" onClick={
         () => history("/form")
       }>
         Add New Data
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={filterValidRecords}
+        style={{ marginLeft: "10px" }}
+      >
+        Show Valid Records
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={filterRangeRecords}
+        style={{ marginLeft: "10px" }}
+      >
+        Show Range Records
       </Button>
       <table style={{ width: "100%", border: "1px solid black" }}>
         <thead>
@@ -44,7 +72,7 @@ export default function Table() {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row, index) => (
+          {filteredRows.map((row, index) => (
             <tr key={index}>
               {columns.map((column) => (
                 <td key={column.id} style={{ border: "1px solid black" }}>
