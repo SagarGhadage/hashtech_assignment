@@ -65,6 +65,14 @@ export default function Form() {
 
     if (!email) {
       errors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = "Invalid email format";
+    }
+    if (description && description.length > 100) {
+      errors.description = "Description should be less than 100 characters";
+    }
+    if (formData.range < 0 || formData.range > 100) {
+      errors.range = "Range should be between 0 and 100";
     }
     return errors;
   };
@@ -151,7 +159,10 @@ export default function Form() {
                 required
                 name="valid"
                 onChange={
-                  formData.valid ? () => setFormData({ ...formData, valid: false }) : () => setFormData({ ...formData, valid: true })}
+                  formData.valid
+                    ? () => setFormData({ ...formData, valid: false })
+                    : () => setFormData({ ...formData, valid: true })
+                }
                 checked={formData.valid}
               />
             }
