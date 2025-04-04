@@ -38,6 +38,7 @@ export default function Table() {
     );
     setFilteredRows(rangeRows);
   };
+  const validRows = rows.filter((row) => row.valid === "True").length;
   return (
     <div>
       <Button variant="contained" color="primary" onClick={
@@ -85,7 +86,10 @@ export default function Table() {
       </table>
       <div className="table">
         <h2 className="title">Table</h2>
-        <p>Total Rows: {rows.length}</p>
+        <p>Total Records: {filteredRows.length}</p>
+        <p>Valid Records: {validRows}</p>
+        <p>Range Records: {filteredRows.filter((row) => row.range > 29 && row.range < 61).length}</p>
+
     </div>
     </div>
   )
