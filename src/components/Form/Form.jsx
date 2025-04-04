@@ -146,10 +146,13 @@ export default function Form() {
           <FormControlLabel
             control={
               <Checkbox
-                defaultChecked
-                value={formData?.valid}
+                // defaultChecked
+                value={1}
                 required
                 name="valid"
+                onChange={
+                  formData.valid ? () => setFormData({ ...formData, valid: false }) : () => setFormData({ ...formData, valid: true })}
+                checked={formData.valid}
               />
             }
             label="Valid"
