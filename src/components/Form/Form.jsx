@@ -9,7 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 export default function Form() {
   const history = useNavigate();
@@ -24,7 +24,7 @@ export default function Form() {
   const [circle, setCircle] = useState(false);
 
   const handleFromData = (e) => {
-    console.log(formData)
+    console.log(formData);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -33,17 +33,40 @@ export default function Form() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setCircle(true);
-    console.log(e.target.value);
 
-    const data = localStorage.getItem("data")
-      ? JSON.parse(localStorage.getItem("data"))
-      : [];
-      console.log(formData)
-    data.push(formData);
-    localStorage.setItem("id", JSON.parse(localStorage.getItem('id')) + 1);
-    localStorage.setItem("data", JSON.stringify(data));
-    setCircle(false);
-    history("/");
+    let err = validate(formData);
+
+    if (err.title || err.email) {
+      alert("Please fill the required fields");
+      // alert("Please fill the title field");
+      setCircle(false);
+      return;
+    } else {
+      console.log(e.target.value);
+
+      const data = localStorage.getItem("data")
+        ? JSON.parse(localStorage.getItem("data"))
+        : [];
+      console.log(formData);
+      data.push(formData);
+      localStorage.setItem("id", JSON.parse(localStorage.getItem("id")) + 1);
+      localStorage.setItem("data", JSON.stringify(data));
+      setCircle(false);
+      history("/");
+    }
+  };
+
+  const validate = (formData) => {
+    const { title, description, email } = formData;
+    const errors = {};
+    if (!title) {
+      errors.title = "Title is required";
+    }
+
+    if (!email) {
+      errors.email = "Email is required";
+    }
+    return errors;
   };
   return (
     <Box
