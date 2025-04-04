@@ -9,10 +9,12 @@ import {
   TextField,
 } from "@mui/material";
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function Form() {
+  const history = useNavigate();
   const [formData, setFormData] = useState({
-    id: 0,
+    id: localStorage.getItem("id") || 1,
     title: "",
     description: "",
     email: "",
@@ -22,6 +24,7 @@ export default function Form() {
   const [circle, setCircle] = useState(false);
 
   const handleFromData = (e) => {
+    console.log(formData)
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -35,10 +38,12 @@ export default function Form() {
     const data = localStorage.getItem("data")
       ? JSON.parse(localStorage.getItem("data"))
       : [];
+      console.log(formData)
     data.push(formData);
     localStorage.setItem("id", JSON.parse(localStorage.getItem('id')) + 1);
     localStorage.setItem("data", JSON.stringify(data));
     setCircle(false);
+    history("/");
   };
   return (
     <Box
